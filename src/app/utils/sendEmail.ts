@@ -1,28 +1,29 @@
 import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import config from '../config';
 
-
 const sendEmail = async (to: string, html: string) => {
-  const transporter = nodemailer.createTransport({
-    host: config.SMTP_HOST,
-    port: Number(config.SMTP_PORT),
-    secure: config.NODE_ENV === 'production',
-    auth: {
-      user: config.EMAIL_USER,
-      pass: config.EMAIL_PASS,
-    },
-    tls: {
-      minVersion: 'TLSv1.2', // this one i added
-      rejectUnauthorized: false,
-    },
-    socketTimeout: 60000,
-  });
+  const transporter = nodemailer.createTransport(
+    {
+      host: config.SMTP_HOST,
+      port: config.SMTP_PORT,
+      secure: config.NODE_ENV === 'production', // true for 465
+      auth: {
+        user: config.SMTP_MAIL,
+        pass: config.SMTP_PASSWORD,
+      },
+      tls: {
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: false,
+      },
+      socketTimeout: 60000,
+    } as SMTPTransport.Options // <-- Type assertion
+  );
 
   await transporter.sendMail({
-    // add there only website name
-    from: `${config.SMTP_FROM_NAME} <${config.EMAIL_USER}>`,
+    from: `${config.SMTP_FROM_NAME} <${config.SMTP_MAIL}>`,
     to,
-    subject: 'Rest Password Link',
+    subject: 'Reset Password Link',
     html,
   });
 };

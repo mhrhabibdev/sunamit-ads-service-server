@@ -19,8 +19,8 @@ export default {
   SMTP_HOST: process.env.SMTP_HOST,
   SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
   RESET_PASSWORD_LINK: process.env.RESET_PASSWORD_LINK,
-  EMAIL_PASS: process.env.SMTP_PASSWORD,
-  EMAIL_USER: process.env.SMTP_MAIL,
+  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+  SMTP_MAIL: process.env.SMTP_MAIL,
 
 
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

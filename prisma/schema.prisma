@@ -22,13 +22,14 @@ model User {
   password     String
   role         UserRole   @default(USER)
   status       UserStatus @default(ACTIVE)
+   orders     Order[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
   @@map("users")
 }
 
-model service {
+model AdService {
   id          String   @id @default(uuid())
   name        String
   image       String?
@@ -40,10 +41,34 @@ model service {
   isNew       Boolean   @default(false)
   isRecommended Boolean @default(false)
   price       Float
+  orders     Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@map("services")
+  @@map("adservices")
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  userId     String
+  serviceId  String
+  quantity   Int       @default(1)
+  totalPrice Float
+  status     OrderStatus @default(PENDING)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Relations
+  user       User      @relation(fields: [userId], references: [id])
+  service    AdService @relation(fields: [serviceId], references: [id])
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
 }
 
 enum UserRole {

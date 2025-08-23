@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  
 }
 
 datasource db {
@@ -22,7 +21,7 @@ model User {
   password     String
   role         UserRole   @default(USER)
   status       UserStatus @default(ACTIVE)
-   orders     Order[]
+  orders       Order[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
@@ -30,37 +29,43 @@ model User {
 }
 
 model AdService {
-  id          String   @id @default(uuid())
-  name        String
-  image       String?
-  category    String
-  description String?
-  duration    Int
-  isActive    Boolean   @default(true)
-  isPopular   Boolean   @default(false)
-  isNew       Boolean   @default(false)
-  isRecommended Boolean @default(false)
-  price       Float
-  orders     Order[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid())
+  name          String
+  image         String?
+  category      String
+  description   String?
+  duration      Int
+  isActive      Boolean  @default(true)
+  isPopular     Boolean  @default(false)
+  isNew         Boolean  @default(false)
+  isRecommended Boolean  @default(false)
+  price         Float
+  orders        Order[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("adservices")
 }
 
 model Order {
-  id         String    @id @default(uuid())
-  userId     String
+  id         String      @id @default(uuid())
+  userId     String?
   serviceId  String
-  quantity   Int       @default(1)
+  quantity   Int         @default(1)
   totalPrice Float
   status     OrderStatus @default(PENDING)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+
+  // Guest Order fields
+  guestName  String?
+  guestEmail String? 
+  guestPhone String? 
+  guestLink  String? 
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   // Relations
-  user       User      @relation(fields: [userId], references: [id])
-  service    AdService @relation(fields: [serviceId], references: [id])
+  user    User?      @relation(fields: [userId], references: [id])
+  service AdService @relation(fields: [serviceId], references: [id])
 
   @@map("orders")
 }

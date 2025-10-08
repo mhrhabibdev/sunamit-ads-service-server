@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { UserRoutes } from '../modules/User/user.route';
 import { AuthRoutes } from '../modules/Auth/auth.route';
 import { AdServiceRoutes } from '../modules/adservice/adservice.route';
+import { OrderRoutes } from '../modules/order/order.route';
 
 
 
@@ -19,6 +20,10 @@ const moduleRoutes: { path: string; route: Router }[] = [
   {
     path: '/adservice',
     route: AdServiceRoutes,
+  },
+  {
+    path: '/order',
+    route: OrderRoutes,
   },
  
 //   {

@@ -1,7 +1,15 @@
+// modules/Auth/auth.utils.ts
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 
+// ✅ id সহ payload type definition
+interface TokenPayload {
+  email: string;
+  id: string;
+  role: string;
+}
+
 export const generateToken = (
-  payload: { email: string; role: string },
+  payload: TokenPayload, // ✅ এখন id সহ
   secret: Secret,
   expiresIn: any,
 ) => {
@@ -12,5 +20,7 @@ export const generateToken = (
 };
 
 export const verifyToken = (token: string, secret: Secret) => {
-  return jwt.verify(token, secret) as JwtPayload;
+  const decoded = jwt.verify(token, secret) as JwtPayload;
+  console.log("🔐 Verified Token Payload:", decoded); // Debugging
+  return decoded;
 };
